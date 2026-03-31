@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Railway Trip Management{% endblock %}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: linear-gradient(135deg, #1a3c5e, #2d6a9f);
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .nav-brand {
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 16px 20px 16px 0;
+      margin-right: 20px;
+      border-right: 1px solid rgba(255,255,255,0.25);
+      white-space: nowrap;
+    }
+    nav a {
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      padding: 18px 16px;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    nav a:hover, nav a.active {
+      background: rgba(255,255,255,0.12);
+      color: white;
+    }
+
+    /* ── Main container ── */
+    .container {
+      max-width: 1000px;
+      margin: 36px auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    /* ── Page title ── */
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1a3c5e;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #2d6a9f;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+
+    /* ── Forms ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1a3c5e;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #c8d8ed;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: #2d6a9f;
+    }
+    .btn {
+      background: #2d6a9f;
+      color: white;
+      border: none;
+      padding: 11px 28px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #1a3c5e; }
+
+    /* ── Alert ── */
+    .alert {
+      padding: 12px 18px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 0.92rem;
+    }
+    .alert-error   { background: #fdecea; border-left: 4px solid #e53935; color: #b71c1c; }
+    .alert-success { background: #e8f5e9; border-left: 4px solid #43a047; color: #1b5e20; }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    thead tr { background: #2d6a9f; color: white; }
+    thead th { padding: 10px 14px; text-align: center; font-weight: 600; }
+    tbody tr { background: #f7f9fc; }
+    tbody tr:nth-child(even) { background: #edf2f9; }
+    tbody td { padding: 9px 14px; text-align: center; border-bottom: 1px solid #dde8f5; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .badge-vip     { background: #fff3cd; color: #856404; }
+    .badge-economy { background: #e0f2f1; color: #00695c; }
+    .badge-type    { background: #e3f2fd; color: #0d47a1; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 14px;
+      font-size: 0.78rem;
+      color: #999;
+      background: white;
+      border-top: 1px solid #e0e8f0;
+    }
+
+    /* ── Responsive grid ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">🚆 Railway DSS</div>
+  <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
+  <a href="/search" {% if request.path == '/search' %}class="active"{% endif %}>Search Trip</a>
+  <a href="/filter" {% if request.path == '/filter' %}class="active"{% endif %}>Filter Trips</a>
+  <a href="/stats" {% if request.path == '/stats' %}class="active"{% endif %}>Statistics</a>
+</nav>
+
+<div class="container">
+  {% block content %}{% endblock %}
+</div>
+
+<footer>UMBB – FS | CS Department 2025/2026 | L3 – DSS | Railway Trip Management</footer>
+
+</body>
+</html>

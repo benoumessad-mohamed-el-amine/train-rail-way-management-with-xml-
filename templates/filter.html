@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Filter Trips – Railway DSS{% endblock %}
+
+{% block content %}
+<h1 class="page-title">🎛️ Filter Trips</h1>
+<p style="color:#666; margin-bottom:20px; font-size:0.9rem;">
+  Uses <strong>ElementTree API</strong> to parse and filter trips. Leave a field blank to ignore it.
+</p>
+
+<div class="card">
+  <form method="POST">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="departure">Departure City</label>
+        <select id="departure" name="departure">
+          <option value="">— Any —</option>
+          {% for d in departures %}
+            <option value="{{ d }}" {% if f_dep == d %}selected{% endif %}>{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="arrival">Arrival City</label>
+        <select id="arrival" name="arrival">
+          <option value="">— Any —</option>
+          {% for a in arrivals %}
+            <option value="{{ a }}" {% if f_arr == a %}selected{% endif %}>{{ a }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="train_type">Train Type</label>
+        <select id="train_type" name="train_type">
+          <option value="">— Any —</option>
+          {% for t in train_types %}
+            <option value="{{ t }}" {% if f_type == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="max_price">Max Price (DA)</label>
+        <input type="number" id="max_price" name="max_price"
+               placeholder="e.g. 1500" min="0" value="{{ f_maxprice }}"/>
+      </div>
+    </div>
+
+    <button type="submit" class="btn" style="margin-top:6px;">Apply Filters</button>
+  </form>
+</div>
+
+{% if trips is not none %}
+  {% if trips %}
+    <p style="color:#444; margin-bottom:14px; font-size:0.9rem;">
+      <strong>{{ trips|length }}</strong> trip(s) found.
+    </p>
+    {% for trip in trips %}
+    <div class="card" style="padding: 18px 22px;">
+      <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px; flex-wrap:wrap;">
+        <span style="background:#1a3c5e; color:white; padding:4px 12px; border-radius:6px; font-weight:700; font-size:0.95rem;">
+          {{ trip.code }}
+        </span>
+        <span style="font-weight:700; color:#1a3c5e;">
+          {{ trip.departure }} &rarr; {{ trip.arrival }}
+        </span>
+        <span class="badge badge-type">{{ trip.type }}</span>
+        <span style="margin-left:auto; color:#666; font-size:0.85rem;">
+          🕐 {{ trip.sched_dep }} – {{ trip.sched_arr }}
+        </span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Price (DA)</th>
+            <th>Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cls in trip.classes %}
+          <tr>
+            <td>
+              {% if cls.type == 'VIP' %}
+                <span class="badge badge-vip">VIP</span>
+              {% else %}
+                <span class="badge badge-economy">{{ cls.type }}</span>
+              {% endif %}
+            </td>
+            <td style="font-weight:600;">{{ cls.price }} DA</td>
+            <td>{{ trip.days }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="alert alert-error">No trips match the selected filters.</div>
+  {% endif %}
+{% endif %}
+{% endblock %}

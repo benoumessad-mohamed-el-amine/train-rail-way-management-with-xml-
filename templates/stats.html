@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Statistics – Railway DSS{% endblock %}
+
+{% block content %}
+<h1 class="page-title">📊 Statistics</h1>
+<p style="color:#666; margin-bottom:24px; font-size:0.9rem;">
+  Computed with <strong>ElementTree API</strong> (xml.etree.ElementTree).
+</p>
+
+<!-- Trip count by train type -->
+<div class="card">
+  <div style="font-size:1rem; font-weight:700; color:#1a3c5e; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e0eaf5;">
+    🚂 Number of Trips by Train Type
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Train Type</th>
+        <th>Number of Trips</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t_type, count in type_counter.items()|sort %}
+      <tr>
+        <td><span class="badge badge-type">{{ t_type }}</span></td>
+        <td style="font-weight:700; font-size:1.05rem;">{{ count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Per-line stats -->
+<div class="card">
+  <div style="font-size:1rem; font-weight:700; color:#1a3c5e; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e0eaf5;">
+    💰 Cheapest &amp; Most Expensive Trip per Line
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Line</th>
+        <th>Route</th>
+        <th>Trips</th>
+        <th>Cheapest Ticket</th>
+        <th>Most Expensive Ticket</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ls in line_stats %}
+      <tr>
+        <td style="font-weight:700; color:#1a3c5e;">{{ ls.code }}</td>
+        <td>{{ ls.departure }} &rarr; {{ ls.arrival }}</td>
+        <td>{{ ls.num_trips }}</td>
+        <td>
+          {% if ls.cheapest %}
+            <span style="color:#1b5e20; font-weight:600;">
+              {{ ls.cheapest.price }} DA
+            </span>
+            <br/><small style="color:#666;">{{ ls.cheapest.trip }} – {{ ls.cheapest.class }}</small>
+          {% else %}–{% endif %}
+        </td>
+        <td>
+          {% if ls.most_exp %}
+            <span style="color:#b71c1c; font-weight:600;">
+              {{ ls.most_exp.price }} DA
+            </span>
+            <br/><small style="color:#666;">{{ ls.most_exp.trip }} – {{ ls.most_exp.class }}</small>
+          {% else %}–{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Search Trip – Railway DSS{% endblock %}
+
+{% block content %}
+<h1 class="page-title">🔍 Search Trip by Code</h1>
+<p style="color:#666; margin-bottom:20px; font-size:0.9rem;">
+  Uses the <strong>DOM API</strong> (xml.dom.minidom) to retrieve complete trip information.
+</p>
+
+<div class="card">
+  <form method="POST">
+    <div style="display:flex; gap:12px; align-items:flex-end;">
+      <div class="form-group" style="flex:1; margin:0;">
+        <label for="code">Trip Code</label>
+        <input type="text" id="code" name="code" placeholder="e.g. T101, T202, T1001"
+               value="{{ code }}" autocomplete="off"/>
+      </div>
+      <button type="submit" class="btn">Search</button>
+    </div>
+  </form>
+</div>
+
+{% if error %}
+  <div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+{% if trip %}
+<div class="card">
+  <!-- Trip header -->
+  <div style="display:flex; gap:14px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
+    <div style="background:#1a3c5e; color:white; padding:8px 18px; border-radius:8px; font-size:1.4rem; font-weight:700;">
+      {{ trip.code }}
+    </div>
+    <div>
+      <div style="font-size:1.1rem; font-weight:700; color:#1a3c5e;">
+        {{ trip.departure }} &rarr; {{ trip.arrival }}
+      </div>
+      <div style="font-size:0.85rem; color:#666; margin-top:2px;">
+        Line {{ trip.line_code }}
+      </div>
+    </div>
+    <div style="margin-left:auto;">
+      <span class="badge badge-type">{{ trip.type }}</span>
+    </div>
+  </div>
+
+  <!-- Schedule & Days -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+    <div style="background:#f0f4f8; border-radius:8px; padding:14px;">
+      <div style="font-size:0.78rem; color:#666; text-transform:uppercase; font-weight:600; margin-bottom:4px;">🕐 Schedule</div>
+      <div style="font-size:1.05rem; font-weight:700; color:#1a3c5e;">
+        {{ trip.sched_dep }} → {{ trip.sched_arr }}
+      </div>
+    </div>
+    <div style="background:#f0f4f8; border-radius:8px; padding:14px;">
+      <div style="font-size:0.78rem; color:#666; text-transform:uppercase; font-weight:600; margin-bottom:4px;">📅 Operating Days</div>
+      <div style="font-size:1rem; font-weight:600; color:#1a3c5e;">{{ trip.days }}</div>
+    </div>
+  </div>
+
+  <!-- Classes -->
+  <div style="font-size:0.85rem; font-weight:700; color:#2d6a9f; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+    Available Classes &amp; Prices
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Class</th>
+        <th>Price (DA)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cls in trip.classes %}
+      <tr>
+        <td>
+          {% if cls.type == 'VIP' %}
+            <span class="badge badge-vip">VIP</span>
+          {% else %}
+            <span class="badge badge-economy">{{ cls.type }}</span>
+          {% endif %}
+        </td>
+        <td style="font-weight:600; {% if cls.type == 'VIP' %}color:#856404;{% endif %}">
+          {{ cls.price }} DA
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

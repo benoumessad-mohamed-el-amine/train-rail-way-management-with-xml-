@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Home – Railway Trip Management{% endblock %}
+
+{% block content %}
+<div style="text-align:center; padding: 40px 0 20px;">
+  <div style="font-size: 4rem; margin-bottom: 16px;">🚆</div>
+  <h1 style="font-size: 2rem; color: #1a3c5e; margin-bottom: 10px;">Railway Trip Management</h1>
+  <p style="color: #666; font-size: 1rem; max-width: 500px; margin: 0 auto 36px;">
+    UMBB – FS | CS Department 2025/2026 | Module L3 – DSS
+  </p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+
+  <a href="/search" style="text-decoration:none;">
+    <div class="card" style="text-align:center; transition: transform 0.2s, box-shadow 0.2s; cursor:pointer;"
+         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.12)'"
+         onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🔍</div>
+      <h2 style="color:#1a3c5e; font-size:1.1rem; margin-bottom:8px;">Search by Trip Code</h2>
+      <p style="color:#666; font-size:0.87rem;">Look up complete details of any trip using its unique code (DOM API).</p>
+    </div>
+  </a>
+
+  <a href="/filter" style="text-decoration:none;">
+    <div class="card" style="text-align:center; transition: transform 0.2s, box-shadow 0.2s; cursor:pointer;"
+         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.12)'"
+         onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🎛️</div>
+      <h2 style="color:#1a3c5e; font-size:1.1rem; margin-bottom:8px;">Filter Trips</h2>
+      <p style="color:#666; font-size:0.87rem;">Filter by departure, arrival, train type, or maximum price (ElementTree API).</p>
+    </div>
+  </a>
+
+  <a href="/stats" style="text-decoration:none;">
+    <div class="card" style="text-align:center; transition: transform 0.2s, box-shadow 0.2s; cursor:pointer;"
+         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.12)'"
+         onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="font-size:2.5rem; margin-bottom:12px;">📊</div>
+      <h2 style="color:#1a3c5e; font-size:1.1rem; margin-bottom:8px;">Statistics</h2>
+      <p style="color:#666; font-size:0.87rem;">Cheapest / most expensive per line and trip count by train type (ElementTree API).</p>
+    </div>
+  </a>
+
+</div>
+{% endblock %}
