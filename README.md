@@ -52,12 +52,6 @@ Install the required packages:
 pip install flask
 ```
 
-Or if a `requirements.txt` file exists:
-
-```bash
-pip install -r requirements.txt
-```
-
 ---
 
 ## ▶️ Run the Application
